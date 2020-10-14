@@ -35,30 +35,47 @@ async function managerQuestions(){
         type: "input",
         name: "officeNumber",
         message: "What is the team manager's office number?"
-    },
-    {
-        type: "list",
-        name: "role",
-        message: "What is the next position?",
-        choices: ["employee", "engineer", "intern"],
     }])
 
     .then(answers => {
         let manager = new Manager(answers.name, answers.id, answers.email, answers.officeNumber);
+        
+        nextPosition()
 
         console.log(manager);
         employees.push(manager);
-        let html = render(employees);
-
-        // let html = render([manager, new Engineer("Greg", 234, "email@email.com", "guywithgithub"), new Intern("Joe", 222, "email2@email", "UC") ]);
-        fs.appendFile("./rendered/index.html", html, function(err) {
-            if (err) {
-              throw err;
-            }
-          });
+        
+        
+        
+        
+        
+        
+        
     })
 
 }
+
+async function nextPosition(){
+    inquirer.prompt([{   
+        type: "list",
+        name: "role",
+        message: "What is the next position?",
+        choices: ["engineer", "intern", "no more employees"]
+    }])
+
+    .then(function({role}){
+        if (role === "engineer") {
+            engineerQuestions();
+        }else if (role === "intern") {
+            internQuestions();
+        }else if (role === "no more employees"){
+            console.log("Check the rendered folder!");
+            renderedhtml();
+        }
+
+    });
+};
+
 
 async function engineerQuestions(){
     inquirer.prompt([{
@@ -78,15 +95,15 @@ async function engineerQuestions(){
 },
 {
     type: "input",
-    name: "gibhub",
+    name: "github",
     message: "What is the engineer's GitHub username?",
-},
-{
-    type: "list",
-    name: "role",
-    message: "What is the next position?",
-    choices: ["employee", "engineer", "intern"],
 }])
+.then(answers => {
+    let engineer = new Engineer(answers.name, answers.id, answers.email, answers.github);
+    nextPosition();
+    console.log(engineer);
+    employees.push(engineer);    
+})
 }
 
 async function internQuestions(){
@@ -108,38 +125,24 @@ async function internQuestions(){
     {
         type: "input",
         name: "school",
-        message: "What school did the intern go to?,"
-    },
-    {
-        type: "list",
-        name: "role",
-        message: "What is the next position?",
-        choices: ["employee", "engineer", "intern"],
-    }])        
+        message: "What school did the intern go to?",
+    }])  
+    .then(answers => {
+        let intern = new Intern(answers.name, answers.id, answers.email, answers.school);
+        console.log(intern);
+        employees.push(intern);
+        nextPosition();         
+    })      
 }
 
-async function employeeQuestions(){
-    inquirer.prompt([{
-        type: "input",
-        name: "name",
-        message: "What is the employee's name?",     
-    },
-    {
-        type: "number",
-        name: "id",
-        message: "What is the employee's ID?",
-    },
-    {
-        type: "input",
-        name: "email",
-        message: "What is the employee's email address?",
-    },
-    {
-        type: "list",
-        name: "role",
-        message: "What is the next position?",
-        choices: ["employee", "engineer", "intern"],
-    }])      
+async function renderedhtml(){
+    let html = render(employees);
+        // let html = render([manager, new Engineer("Greg", 234, "email@email.com", "guywithgithub"), new Intern("Joe", 222, "email2@email", "UC") ]);
+        fs.writeFile("./rendered/index.html", html, function(err) {
+            if (err) {
+              throw err;
+            }
+          });
 }
 
 
