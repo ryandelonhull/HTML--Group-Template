@@ -41,18 +41,9 @@ async function managerQuestions(){
         let manager = new Manager(answers.name, answers.id, answers.email, answers.officeNumber);
         
         nextPosition()
-
         console.log(manager);
-        employees.push(manager);
-        
-        
-        
-        
-        
-        
-        
+        employees.push(manager);              
     })
-
 }
 
 async function nextPosition(){
@@ -79,31 +70,31 @@ async function nextPosition(){
 
 async function engineerQuestions(){
     inquirer.prompt([{
-    type: "input",
-    name: "name",
-    message: "What is the engineer's name?",     
-},
-{
-    type: "number",
-    name: "id",
-    message: "What is the engineer's ID?",
-},
-{
-    type: "input",
-    name: "email",
-    message: "What is the engineer's email address?",
-},
-{
-    type: "input",
-    name: "github",
-    message: "What is the engineer's GitHub username?",
-}])
-.then(answers => {
-    let engineer = new Engineer(answers.name, answers.id, answers.email, answers.github);
-    nextPosition();
-    console.log(engineer);
-    employees.push(engineer);    
-})
+        type: "input",
+        name: "name",
+        message: "What is the engineer's name?",     
+    },  
+    {
+        type: "number",
+        name: "id",
+        message: "What is the engineer's ID?",
+    },
+    {
+        type: "input",
+        name: "email",
+        message: "What is the engineer's email address?",
+    },
+    {
+        type: "input",
+        name: "github",
+        message: "What is the engineer's GitHub username?",
+    }])
+    .then(answers => {
+        let engineer = new Engineer(answers.name, answers.id, answers.email, answers.github);
+        nextPosition();
+        console.log(engineer);
+        employees.push(engineer);    
+    })
 }
 
 async function internQuestions(){
@@ -142,11 +133,8 @@ async function renderedhtml(){
             if (err) {
               throw err;
             }
-          });
+        });
 }
-
-
-
 managerQuestions();
 
 
